@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { gmailComposeUrl, navItems, resume, siteMeta } from "@/content/site";
 import { EmailIcon } from "./Icons";
-import { ResumeDownloadLink } from "./ResumeDownloadLink";
+import { ResumeDownloadLink } from "../components/ResumeDownloadLink";
 
 export function SiteHeader() {
   return (
