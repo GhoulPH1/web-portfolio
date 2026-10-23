@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# agentic skills applied for the design
+/agent-skills
+
+# AI documentation
+/docs
