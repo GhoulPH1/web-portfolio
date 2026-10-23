@@ -1,23 +1,41 @@
-import type { LearningItem } from "./types";
+import type { LearningItem, LearningStatus } from "./types";
 
 export const learning: LearningItem[] = [
   {
-    id: "service-desk",
-    topic: "Service Desk practices",
-    status: "active",
-    objective: "Build confidence handling common support scenarios and ticket-style problem solving.",
-    relatedActivity: "Service Desk Simulator exercises",
-  },
-  {
     id: "networking",
     topic: "Networking fundamentals",
-    status: "active",
-    objective: "Strengthen core networking concepts for entry-level IT work.",
+    status: "in-progress",
   },
   {
-    id: "web-and-ui",
-    topic: "Web development and interface design",
-    status: "active",
-    objective: "Continue improving frontend craft, usability judgment, and practical delivery.",
+    id: "service-desk",
+    topic: "IT support practice (Service Desk Simulator)",
+    status: "in-progress",
+    relatedActivity: "Service Desk Simulator",
+  },
+  {
+    id: "programming-fundamentals",
+    topic: "Programming fundamentals",
+    status: "relearning",
+  },
+  {
+    id: "python",
+    topic: "Python",
+    status: "planned",
   },
 ];
+
+export const learningStatusLabel: Record<LearningStatus, string> = {
+  "in-progress": "In progress",
+  relearning: "Relearning",
+  planned: "Planned",
+};
+
+export function getActiveLearning(): LearningItem[] {
+  return learning.filter(
+    (item) => item.status === "in-progress" || item.status === "relearning",
+  );
+}
+
+export function getPlannedLearning(): LearningItem[] {
+  return learning.filter((item) => item.status === "planned");
+}

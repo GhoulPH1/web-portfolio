@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ContactLinks } from "../components/ContactLinks";
 import { EducationEntry } from "../components/EducationEntry";
 import { ExperienceEntry } from "../components/ExperienceEntry";
 import { LearningList } from "../components/LearningList";
@@ -6,15 +7,18 @@ import { ResumeDownloadLink } from "../components/ResumeDownloadLink";
 import { SkillList } from "../components/SkillList";
 import { education } from "@/content/education";
 import { experience } from "@/content/experience";
-import { learning } from "@/content/learning";
 import { skillCategories } from "@/content/skills";
-import { positioning, resume, siteMeta } from "@/content/site";
-import { ContactLinks } from "../components/ContactLinks";
+import {
+  aboutCredentials,
+  aboutDirection,
+  resume,
+  rolesOpenTo,
+} from "@/content/site";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Background, education, internship experience, skills, and current learning for Godric G. Ramelo, BSIT undergraduate.",
+    "Education, experience, skills, and current learning for Godric G. Ramelo — currently pursuing a BSIT degree at Gordon College.",
 };
 
 export default function AboutMePage() {
@@ -22,19 +26,16 @@ export default function AboutMePage() {
     <main id="main" className="mx-auto w-full max-w-5xl flex-1 px-5 py-14 sm:px-8 sm:py-20">
       <header className="max-w-3xl">
         <h1 className="text-4xl font-semibold tracking-tight">About</h1>
-        <p className="mt-4 text-lg leading-relaxed text-foreground/90">{positioning}</p>
-        <p className="mt-4 text-base leading-relaxed text-muted">
-          I am {siteMeta.siteName}, a Bachelor of Science in Information Technology student at
-          Gordon College. Through coursework, academic projects, and on-the-job training, I have
-          built introductory experience in web development, interface usability, and technical
-          support. I am looking for an entry-level IT opportunity where I can contribute to practical
-          work and keep growing.
+        <p className="mt-4 text-base leading-relaxed text-foreground/90">
+          {aboutCredentials}
         </p>
+        <p className="mt-3 text-base leading-relaxed text-muted">{aboutDirection}</p>
         <div className="mt-6 flex flex-col gap-4">
           <ResumeDownloadLink
             resume={resume}
             className="inline-flex w-fit bg-accent px-4 py-2.5 text-sm font-medium text-white hover:bg-accent-hover"
           />
+          <p className="text-sm text-muted">{rolesOpenTo}</p>
           <ContactLinks />
         </div>
       </header>
@@ -66,7 +67,7 @@ export default function AboutMePage() {
           Skills
         </h2>
         <p className="mt-2 text-sm text-muted">
-          Levels reflect evidence from projects and practice — not percentages or certifications.
+          Grouped by use in academic projects and support work.
         </p>
         <div className="mt-6">
           <SkillList categories={skillCategories} />
@@ -78,10 +79,10 @@ export default function AboutMePage() {
           Currently learning
         </h2>
         <p className="mt-2 text-sm text-muted">
-          These are learning activities, not completed training credentials or job experience.
+          Learning activities — not experience, training credentials, or certifications.
         </p>
         <div className="mt-6">
-          <LearningList items={learning} />
+          <LearningList />
         </div>
       </section>
     </main>

@@ -1,4 +1,3 @@
-import { skillLevelLabel } from "@/content/skills";
 import type { SkillCategory } from "@/content/types";
 
 type Props = {
@@ -13,21 +12,16 @@ export function SkillList({ categories }: Props) {
           <h3 id={`skill-${category.id}`} className="text-lg font-semibold tracking-tight">
             {category.label}
           </h3>
+          {category.summary ? (
+            <p className="mt-2 text-sm leading-relaxed text-muted">{category.summary}</p>
+          ) : null}
           <ul className="mt-3 divide-y divide-border border-y border-border">
             {category.items.map((item) => (
-              <li
-                key={item.id}
-                className="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
-              >
-                <div>
-                  <p className="font-medium">{item.name}</p>
-                  {item.evidenceNote ? (
-                    <p className="text-sm text-muted">{item.evidenceNote}</p>
-                  ) : null}
-                </div>
-                <p className="shrink-0 text-sm text-muted">
-                  {skillLevelLabel[item.level] ?? item.level}
-                </p>
+              <li key={item.id} className="py-3">
+                <p className="font-medium">{item.name}</p>
+                {item.evidenceNote ? (
+                  <p className="mt-1 text-sm text-muted">{item.evidenceNote}</p>
+                ) : null}
               </li>
             ))}
           </ul>

@@ -11,10 +11,7 @@ export function EducationEntry({ item }: Props) {
       <p className="mt-1 text-sm text-muted">
         {item.institution} · {item.location}
       </p>
-      <p className="mt-1 text-sm text-muted">
-        {item.status === "undergraduate" ? "Undergraduate" : "Graduate"}
-        {item.expectedCompletion ? ` · Expected completion ${item.expectedCompletion}` : null}
-      </p>
+      <p className="mt-1 text-sm text-muted">{item.statusLabel}</p>
       {item.coursework.length > 0 ? (
         <>
           <h4 className="mt-4 text-sm font-medium uppercase tracking-[0.12em] text-muted">

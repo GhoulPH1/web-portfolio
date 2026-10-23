@@ -2,10 +2,10 @@ import type { ContactInfo, NavItem, ResumeAsset, SiteMetadata } from "./types";
 
 export const siteMeta: SiteMetadata = {
   siteName: "Godric G. Ramelo",
-  defaultTitle: "Godric G. Ramelo — BSIT Portfolio",
+  defaultTitle: "Godric G. Ramelo — Portfolio",
   titleTemplate: "%s · Godric G. Ramelo",
   defaultDescription:
-    "BSIT undergraduate portfolio spanning web development, interface usability, and technical support. Projects, experience, and a downloadable résumé.",
+    "Godric G. Ramelo — Currently pursuing a BSIT degree at Gordon College. Academic projects and contact.",
   locale: "en",
 };
 
@@ -46,8 +46,19 @@ export const navItems: NavItem[] = [
   { href: "/about-me", label: "About" },
 ];
 
-export const positioning =
-  "BSIT undergraduate focused on web development, interface usability, and technical support — seeking an entry-level IT role.";
+export const homeGreeting = "Hi, I am";
 
-export const homeSummary =
-  "Introductory experience through academic projects and on-the-job training with the City Government of Olongapo. Comfortable with web technologies, databases, and helping people use digital systems.";
+/** Owner-approved homepage introduction */
+export const homeIntroduction = [
+  "Currently pursuing an IT degree, turning practical problems into useful technology solutions.",
+  "Developing practical skills to deliver IT solutions that solve real-world problems and improve everyday processes.",
+];
+
+export const rolesOpenTo =
+  "Open to opportunities in IT";
+
+export const aboutCredentials =
+  "Currently pursuing a Bachelor of Science in Information Technology at Gordon College.";
+
+export const aboutDirection =
+  "Developing my technical skills through continuous learning and practical experience, with the goal of applying IT to solve real-world problems.";

@@ -21,7 +21,9 @@ export function ContactLinks({ className = "", showLabels = true }: Props) {
           <EmailIcon />
           {showLabels ? <span>{contact.email}</span> : null}
           <span className="sr-only">
-            {showLabels ? " — compose email in Gmail (opens in a new tab)" : "Email Godric in Gmail (opens in a new tab)"}
+            {showLabels
+              ? " — compose email in Gmail (opens in a new tab)"
+              : "Email Godric in Gmail (opens in a new tab)"}
           </span>
         </a>
       </li>
@@ -48,11 +50,11 @@ export function ContactLinks({ className = "", showLabels = true }: Props) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-muted transition-colors hover:text-foreground"
           >
-            {/* <GitHubIcon />
+            <GitHubIcon />
             {showLabels ? <span>GitHub</span> : null}
             <span className="sr-only">
               {showLabels ? " (opens in a new tab)" : "GitHub profile (opens in a new tab)"}
-            </span> */}
+            </span>
           </a>
         </li>
       ) : null}

@@ -47,7 +47,6 @@ export default async function ProjectCaseStudyPage({ params }: PageProps) {
 
       <div className="mt-8">
         <ProjectMeta
-          type={project.type}
           status={project.status}
           role={project.role}
           technologies={project.technologies}
@@ -72,17 +71,23 @@ export default async function ProjectCaseStudyPage({ params }: PageProps) {
         </ul>
       ) : null}
 
-      <Section title="Problem / motivation">
-        <p>{project.problem}</p>
-      </Section>
+      {project.problem ? (
+        <Section title="Purpose">
+          <p>{project.problem}</p>
+        </Section>
+      ) : null}
 
-      <Section title="Intended users">
-        <p>{project.intendedUsers}</p>
-      </Section>
+      {project.intendedUsers ? (
+        <Section title="Intended users">
+          <p>{project.intendedUsers}</p>
+        </Section>
+      ) : null}
 
-      <Section title="Contributions">
-        <BulletList items={project.contributions} />
-      </Section>
+      {project.contributions.length > 0 ? (
+        <Section title="What I Worked On">
+          <BulletList items={project.contributions} />
+        </Section>
+      ) : null}
 
       {project.features.length > 0 ? (
         <Section title="Features">
@@ -91,7 +96,7 @@ export default async function ProjectCaseStudyPage({ params }: PageProps) {
       ) : null}
 
       {project.challenges.length > 0 ? (
-        <Section title="Challenges and decisions">
+        <Section title="Development challenges">
           <BulletList items={project.challenges} />
         </Section>
       ) : null}
@@ -119,7 +124,7 @@ export default async function ProjectCaseStudyPage({ params }: PageProps) {
       ) : null}
 
       {project.lessons.length > 0 ? (
-        <Section title="Lessons and improvements">
+        <Section title="What I learned">
           <BulletList items={project.lessons} />
         </Section>
       ) : null}

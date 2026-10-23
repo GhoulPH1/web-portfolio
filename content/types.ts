@@ -17,7 +17,8 @@ export type ProjectStatus =
   | "prototype"
   | "archived";
 
-export type LearningStatus = "active" | "paused" | "completed-intro";
+/** Learning list statuses — Planned must stay distinct from in-progress work */
+export type LearningStatus = "in-progress" | "relearning" | "planned";
 
 export interface ProjectScreenshot {
   src: string;
@@ -72,8 +73,8 @@ export interface EducationItem {
   institution: string;
   location: string;
   credential: string;
-  status: "undergraduate" | "graduate";
-  expectedCompletion?: string;
+  /** Public status label, e.g. "Currently pursuing" — never "undergraduate" */
+  statusLabel: string;
   coursework: string[];
   honors: string[];
 }
@@ -89,6 +90,7 @@ export interface SkillItem {
 export interface SkillCategory {
   id: string;
   label: string;
+  summary?: string;
   items: SkillItem[];
 }
 
@@ -96,7 +98,6 @@ export interface LearningItem {
   id: string;
   topic: string;
   status: LearningStatus;
-  objective: string;
   relatedActivity?: string;
   updatedAt?: string;
 }

@@ -6,8 +6,7 @@ export const education: EducationItem[] = [
     institution: "Gordon College",
     location: "Olongapo City",
     credential: "Bachelor of Science in Information Technology",
-    status: "undergraduate",
-    expectedCompletion: "2027",
+    statusLabel: "Currently pursuing",
     coursework: [
       "Object-Oriented Programming",
       "Fundamentals of Database Systems",

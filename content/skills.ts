@@ -2,79 +2,63 @@ import type { SkillCategory } from "./types";
 
 export const skillCategories: SkillCategory[] = [
   {
-    id: "languages",
-    label: "Programming languages",
+    id: "support",
+    label: "Support and troubleshooting",
+    summary: "Capabilities from OJT, coursework, and practice.",
     items: [
       {
-        id: "js",
-        name: "JavaScript",
-        level: "used-in-completed-project",
-        evidenceNote: "Used across web projects",
-      },
-      {
-        id: "ts",
-        name: "TypeScript",
+        id: "user-assistance",
+        name: "User assistance and system navigation",
         level: "practical-familiarity",
-        evidenceRef: "medicaone",
-        evidenceNote: "Used where applicable in MedicaOne",
+        evidenceNote: "OJT",
       },
       {
-        id: "php",
-        name: "PHP",
-        level: "used-in-completed-project",
-        evidenceRef: "foodhub",
-        evidenceNote: "FoodHub and SideScroll backends",
+        id: "data-encoding",
+        name: "Data encoding",
+        level: "practical-familiarity",
+        evidenceNote: "OJT",
+      },
+      {
+        id: "pc-troubleshooting",
+        name: "PC troubleshooting",
+        level: "foundational",
+        evidenceNote: "Coursework",
+      },
+      {
+        id: "service-desk",
+        name: "Service desk scenarios",
+        level: "learning",
+        evidenceNote: "Practice",
       },
     ],
   },
   {
     id: "web",
-    label: "Web technologies",
+    label: "Web development",
+    summary: "Used in MedicaOne, FoodHub, and SideScroll.",
     items: [
-      { id: "html", name: "HTML", level: "foundational" },
-      { id: "css", name: "CSS", level: "foundational" },
-    ],
-  },
-  {
-    id: "frameworks",
-    label: "Frameworks & styling",
-    items: [
-      {
-        id: "angular",
-        name: "Angular",
-        level: "used-in-completed-project",
-        evidenceRef: "foodhub",
-      },
-      {
-        id: "next",
-        name: "Next.js",
-        level: "used-in-completed-project",
-        evidenceRef: "medicaone",
-      },
-      {
-        id: "react",
-        name: "React",
-        level: "used-in-completed-project",
-        evidenceRef: "medicaone",
-      },
+      { id: "js", name: "JavaScript", level: "used-in-completed-project", evidenceRef: "medicaone" },
+      { id: "ts", name: "TypeScript", level: "used-in-completed-project", evidenceRef: "medicaone" },
+      { id: "react", name: "React", level: "used-in-completed-project", evidenceRef: "medicaone" },
+      { id: "next", name: "Next.js", level: "used-in-completed-project", evidenceRef: "medicaone" },
+      { id: "angular", name: "Angular", level: "used-in-completed-project", evidenceRef: "foodhub" },
+      { id: "html", name: "HTML", level: "used-in-completed-project" },
+      { id: "css", name: "CSS", level: "used-in-completed-project" },
       {
         id: "tailwind",
         name: "Tailwind CSS",
-        level: "practical-familiarity",
+        level: "used-in-completed-project",
         evidenceRef: "medicaone",
       },
     ],
   },
   {
-    id: "databases",
-    label: "Databases",
+    id: "backend",
+    label: "Backend and databases",
+    summary: "PHP/MySQL in FoodHub and SideScroll; Firestore in MedicaOne.",
     items: [
-      {
-        id: "mysql",
-        name: "MySQL",
-        level: "used-in-completed-project",
-        evidenceRef: "foodhub",
-      },
+      { id: "php", name: "PHP", level: "used-in-completed-project", evidenceRef: "foodhub" },
+      { id: "mysql", name: "MySQL", level: "used-in-completed-project", evidenceRef: "foodhub" },
       {
         id: "firestore",
         name: "Firebase Cloud Firestore",
@@ -82,16 +66,41 @@ export const skillCategories: SkillCategory[] = [
         evidenceRef: "medicaone",
       },
       {
+        id: "firebase-auth",
+        name: "Firebase Auth",
+        level: "used-in-completed-project",
+        evidenceRef: "medicaone",
+      },
+      {
         id: "mongo",
         name: "MongoDB",
         level: "foundational",
-        evidenceNote: "Basic familiarity",
+        evidenceNote: "Basic familiarity; not demonstrated in the featured projects.",
+      },
+    ],
+  },
+  {
+    id: "design",
+    label: "Interface design",
+    items: [
+      {
+        id: "figma",
+        name: "Figma",
+        level: "foundational",
+        evidenceNote: "Basic familiarity with interface layout and design workflows.",
+      },
+      {
+        id: "canva",
+        name: "Canva",
+        level: "foundational",
+        evidenceNote: "Basic familiarity with visual composition and presentation design.",
       },
     ],
   },
   {
     id: "tools",
     label: "Development tools",
+    summary: "Tools used while building and debugging project work.",
     items: [
       { id: "vscode", name: "Visual Studio Code", level: "practical-familiarity" },
       { id: "git", name: "Git", level: "practical-familiarity" },
@@ -101,31 +110,16 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    id: "design",
-    label: "UI / UX & design",
-    items: [
-      { id: "figma", name: "Figma", level: "foundational" },
-      { id: "canva", name: "Canva", level: "foundational" },
-    ],
-  },
-  {
     id: "workflow",
-    label: "Development workflow",
+    label: "Development practices",
     items: [
       {
         id: "ai-assist",
-        name: "AI-assisted coding & debugging",
+        name: "AI-assisted coding and debugging",
         level: "practical-familiarity",
         evidenceRef: "sidescroll",
-        evidenceNote: "Used as learning and delivery support; not a certification",
+        evidenceNote: "Development practice used on SideScroll. Not a certification.",
       },
     ],
   },
 ];
-
-export const skillLevelLabel: Record<string, string> = {
-  foundational: "Foundational",
-  "practical-familiarity": "Practical familiarity",
-  "used-in-completed-project": "Used in a completed project",
-  learning: "Currently learning",
-};
