@@ -1,4 +1,5 @@
 import type { SkillCategory } from "@/content/types";
+import { Hairline } from "./ui/Hairline";
 
 type Props = {
   categories: SkillCategory[];
@@ -6,21 +7,34 @@ type Props = {
 
 export function SkillList({ categories }: Props) {
   return (
-    <div className="space-y-8">
+    <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
       {categories.map((category) => (
         <section key={category.id} aria-labelledby={`skill-${category.id}`}>
-          <h3 id={`skill-${category.id}`} className="text-lg font-semibold tracking-tight">
+          <h3
+            id={`skill-${category.id}`}
+            className="font-[family-name:var(--font-outfit)] text-base font-medium tracking-tight"
+          >
             {category.label}
           </h3>
           {category.summary ? (
-            <p className="mt-2 text-sm leading-relaxed text-muted">{category.summary}</p>
+            <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+              {category.summary}
+            </p>
           ) : null}
-          <ul className="mt-3 divide-y divide-border border-y border-border">
+          <Hairline className="mt-4" />
+          <ul className="mt-2">
             {category.items.map((item) => (
-              <li key={item.id} className="py-3">
-                <p className="font-medium">{item.name}</p>
+              <li
+                key={item.id}
+                className="border-b border-rule py-3 last:border-b-0"
+              >
+                <p className="font-[family-name:var(--font-outfit)] text-sm text-ink">
+                  {item.name}
+                </p>
                 {item.evidenceNote ? (
-                  <p className="mt-1 text-sm text-muted">{item.evidenceNote}</p>
+                  <p className="text-label mt-1 text-ink-muted">
+                    {item.evidenceNote}
+                  </p>
                 ) : null}
               </li>
             ))}

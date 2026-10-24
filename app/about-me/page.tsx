@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { ContactLinks } from "../components/ContactLinks";
-import { EducationEntry } from "../components/EducationEntry";
-import { ExperienceEntry } from "../components/ExperienceEntry";
 import { LearningList } from "../components/LearningList";
-import { ResumeDownloadLink } from "../components/ResumeDownloadLink";
 import { SkillList } from "../components/SkillList";
+import { Hairline } from "../components/ui/Hairline";
+import { MetaList } from "../components/ui/MetaList";
+import { Reveal } from "../components/ui/Reveal";
+import { Section } from "../components/ui/Section";
+import { SectionLabel } from "../components/ui/SectionLabel";
+import { TextLink } from "../components/ui/TextLink";
 import { education } from "@/content/education";
 import { experience } from "@/content/experience";
 import { skillCategories } from "@/content/skills";
@@ -18,73 +20,82 @@ import {
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Education, experience, skills, and current learning for Godric G. Ramelo — currently pursuing a BSIT degree at Gordon College.",
+    "Education, experience, skills, and current learning for Godric G. Ramelo.",
 };
 
 export default function AboutMePage() {
+  const edu = education[0];
+  const job = experience[0];
+
+  const credentialItems = [
+    edu
+      ? {
+          label: "Education",
+          value: `${edu.statusLabel} · ${edu.credential} · ${edu.institution}, ${edu.location}`,
+        }
+      : null,
+    job
+      ? {
+          label: "INTERNSHIP",
+          value: `${job.title} · ${job.organization} · ${job.start} – ${job.end}`,
+        }
+      : null,
+    edu
+      ? {
+          label: "Coursework",
+          value: edu.coursework.join(", "),
+        }
+      : null,
+  ].filter(Boolean) as { label: string; value: string }[];
+
   return (
-    <main id="main" className="mx-auto w-full max-w-5xl flex-1 px-5 py-14 sm:px-8 sm:py-20">
-      <header className="max-w-3xl">
-        <h1 className="text-4xl font-semibold tracking-tight">About</h1>
-        <p className="mt-4 text-base leading-relaxed text-foreground/90">
-          {aboutCredentials}
-        </p>
-        <p className="mt-3 text-base leading-relaxed text-muted">{aboutDirection}</p>
-        <div className="mt-6 flex flex-col gap-4">
-          <ResumeDownloadLink
-            resume={resume}
-            className="inline-flex w-fit bg-accent px-4 py-2.5 text-sm font-medium text-white hover:bg-accent-hover"
-          />
-          <p className="text-sm text-muted">{rolesOpenTo}</p>
-          <ContactLinks />
+    <main id="main">
+      <Section>
+        <SectionLabel index="02" label="About" />
+        <div className="mt-10 grid gap-10 md:grid-cols-12">
+          <h1 className="text-h1 md:col-span-5">About</h1>
+          <div className="md:col-span-6 md:col-start-7">
+            <Reveal>
+              <p className="text-body text-ink-muted">{aboutCredentials}</p>
+              <p className="text-body mt-4 text-ink-muted">{aboutDirection}</p>
+              <p className="text-body mt-4 text-ink-muted">{rolesOpenTo}</p>
+              {resume.available && resume.href ? (
+                <p className="mt-8">
+                  <TextLink href={resume.href} external>
+                    Résumé
+                  </TextLink>
+                </p>
+              ) : null}
+            </Reveal>
+          </div>
         </div>
-      </header>
 
-      <section aria-labelledby="experience-heading" className="mt-16 max-w-3xl">
-        <h2 id="experience-heading" className="text-2xl font-semibold tracking-tight">
-          Experience
-        </h2>
-        <div className="mt-6 space-y-10">
-          {experience.map((item) => (
-            <ExperienceEntry key={item.id} item={item} />
-          ))}
+        <Hairline className="mt-16" />
+        <div className="mt-10">
+          <h2 className="text-label text-ink-muted">Credentials</h2>
+          <MetaList className="mt-6 md:grid-cols-1" items={credentialItems} />
         </div>
-      </section>
+      </Section>
 
-      <section aria-labelledby="education-heading" className="mt-16 max-w-3xl">
-        <h2 id="education-heading" className="text-2xl font-semibold tracking-tight">
-          Education
-        </h2>
-        <div className="mt-6 space-y-10">
-          {education.map((item) => (
-            <EducationEntry key={item.id} item={item} />
-          ))}
-        </div>
-      </section>
-
-      <section aria-labelledby="skills-heading" className="mt-16 max-w-3xl">
-        <h2 id="skills-heading" className="text-2xl font-semibold tracking-tight">
-          Skills
-        </h2>
-        <p className="mt-2 text-sm text-muted">
+      <Section alt>
+        <h2 className="text-h2">Skills</h2>
+        <p className="text-body mt-3 text-ink-muted">
           Grouped by use in academic projects and support work.
         </p>
-        <div className="mt-6">
+        <div className="mt-10">
           <SkillList categories={skillCategories} />
         </div>
-      </section>
+      </Section>
 
-      <section aria-labelledby="learning-heading" className="mt-16 max-w-3xl">
-        <h2 id="learning-heading" className="text-2xl font-semibold tracking-tight">
-          Currently learning
-        </h2>
-        <p className="mt-2 text-sm text-muted">
+      <Section>
+        <h2 className="text-h2">Currently learning</h2>
+        <p className="text-body mt-3 text-ink-muted">
           Learning activities — not experience, training credentials, or certifications.
         </p>
-        <div className="mt-6">
+        <div className="mt-10">
           <LearningList />
         </div>
-      </section>
+      </Section>
     </main>
   );
 }

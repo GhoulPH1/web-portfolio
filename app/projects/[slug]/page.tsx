@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ProjectMeta } from "../../components/ProjectMeta";
 import { ScreenshotFigure } from "../../components/ScreenshotFigure";
+import { Container } from "../../components/ui/Container";
+import { Hairline } from "../../components/ui/Hairline";
+import { MetaList } from "../../components/ui/MetaList";
+import { TextLink } from "../../components/ui/TextLink";
 import {
+  getAllProjects,
   getAllProjectSlugs,
   getProjectBySlug,
 } from "@/content/projects";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
+};
+
+const indexMap: Record<string, string> = {
+  medicaone: "01",
+  foodhub: "02",
+  sidescroll: "03",
 };
 
 export function generateStaticParams() {
@@ -32,113 +41,121 @@ export default async function ProjectCaseStudyPage({ params }: PageProps) {
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
+  const all = getAllProjects();
+  const currentIndex = all.findIndex((p) => p.slug === slug);
+  const next = currentIndex >= 0 ? all[(currentIndex + 1) % all.length] : undefined;
+  const index = indexMap[project.slug] ?? "00";
+  const stack = project.technologies.join(" / ");
+
   return (
-    <main id="main" className="mx-auto w-full max-w-5xl flex-1 px-5 py-14 sm:px-8 sm:py-20">
-      <p className="text-sm">
-        <Link href="/projects" className="text-muted hover:text-foreground">
-          ← Back to projects
-        </Link>
-      </p>
+    <main id="main" className="bg-bg">
+      <Container className="py-16 md:py-24 lg:py-28">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
+          <aside className="lg:col-span-4 lg:self-start lg:sticky lg:top-24">
+            <p className="font-[family-name:var(--font-outfit)] text-6xl font-light tracking-tight text-ink-muted md:text-7xl">
+              {index}
+            </p>
+            <h1 className="text-h1 mt-4">{project.title}</h1>
+            <p className="text-body text-ink-muted text-lg">{project.summary}</p>
+            <MetaList
+              className="mt-8"
+              items={[
+                { label: "Project", value: project.role },
+                { label: "Stack", value: stack },
+                {
+                  label: "Status",
+                  value:
+                    project.status === "completed" ? "Completed" : project.status,
+                },
+              ]}
+            />
+            <p className="mt-10">
+              <TextLink href="/projects">← Work</TextLink>
+            </p>
+          </aside>
 
-      <header className="mt-6 max-w-3xl">
-        <h1 className="text-4xl font-semibold tracking-tight">{project.title}</h1>
-        <p className="mt-4 text-lg leading-relaxed text-muted">{project.summary}</p>
-      </header>
+          <div className="lg:col-span-8">
 
-      <div className="mt-8">
-        <ProjectMeta
-          status={project.status}
-          role={project.role}
-          technologies={project.technologies}
-        />
-      </div>
+            {project.problem ? (
+              <CaseBlock title="Purpose">
+                <p className="text-body text-ink-muted">{project.problem}</p>
+              </CaseBlock>
+            ) : null}
 
-      {project.links.length > 0 ? (
-        <ul className="mt-6 flex flex-wrap gap-4 text-sm">
-          {project.links.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-accent hover:text-accent-hover"
-              >
-                {link.label}
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      ) : null}
+            {project.contributions.length > 0 ? (
+              <CaseBlock title="What I Worked On">
+                <LineList items={project.contributions} />
+              </CaseBlock>
+            ) : null}
 
-      {project.problem ? (
-        <Section title="Purpose">
-          <p>{project.problem}</p>
-        </Section>
-      ) : null}
+            {project.features.length > 0 ? (
+              <CaseBlock title="Implemented features">
+                <ol className="space-y-0">
+                  {project.features.map((feature, i) => (
+                    <li
+                      key={feature}
+                      className="grid grid-cols-[3rem_1fr] gap-4 border-t border-rule py-4 first:border-t-0"
+                    >
+                      <span className="text-label text-ink-muted">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-body text-ink-muted max-w-none">
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </CaseBlock>
+            ) : null}
 
-      {project.intendedUsers ? (
-        <Section title="Intended users">
-          <p>{project.intendedUsers}</p>
-        </Section>
-      ) : null}
+            {project.screenshots.length > 0 ? (
+              <CaseBlock title="Screenshots">
+                <div className="grid gap-8">
+                  {project.screenshots.map((shot) => (
+                    <ScreenshotFigure key={shot.src} screenshot={shot} />
+                  ))}
+                </div>
+              </CaseBlock>
+            ) : null}
 
-      {project.contributions.length > 0 ? (
-        <Section title="What I Worked On">
-          <BulletList items={project.contributions} />
-        </Section>
-      ) : null}
+            {project.limitations.length > 0 ? (
+              <CaseBlock title="Limitations">
+                <LineList items={project.limitations} />
+              </CaseBlock>
+            ) : null}
 
-      {project.features.length > 0 ? (
-        <Section title="Features">
-          <BulletList items={project.features} />
-        </Section>
-      ) : null}
+            {project.links.length > 0 ? (
+              <CaseBlock title="Links">
+                <ul className="space-y-3">
+                  {project.links.map((link) => (
+                    <li key={link.href}>
+                      <TextLink href={link.href} external={link.kind !== "other"}>
+                        {link.label}
+                      </TextLink>
+                    </li>
+                  ))}
+                </ul>
+              </CaseBlock>
+            ) : null}
 
-      {project.challenges.length > 0 ? (
-        <Section title="Development challenges">
-          <BulletList items={project.challenges} />
-        </Section>
-      ) : null}
-
-      {project.screenshots.length > 0 ? (
-        <Section title="Screenshots">
-          <div className="grid gap-6">
-            {project.screenshots.map((shot) => (
-              <ScreenshotFigure key={shot.src} screenshot={shot} />
-            ))}
+            {next && next.slug !== project.slug ? (
+              <>
+                <Hairline className="mt-16" />
+                <p className="mt-8">
+                  <TextLink href={next.caseStudyPath}>
+                    Next project · {next.title}
+                  </TextLink>
+                </p>
+              </>
+            ) : null}
           </div>
-        </Section>
-      ) : null}
-
-      {project.outcomes.length > 0 ? (
-        <Section title="Outcomes">
-          <BulletList items={project.outcomes} />
-        </Section>
-      ) : null}
-
-      {project.limitations.length > 0 ? (
-        <Section title="Limitations / unfinished work">
-          <BulletList items={project.limitations} />
-        </Section>
-      ) : null}
-
-      {project.lessons.length > 0 ? (
-        <Section title="What I learned">
-          <BulletList items={project.lessons} />
-        </Section>
-      ) : null}
-
-      <p className="mt-14 text-sm">
-        <Link href="/projects" className="font-medium text-accent hover:text-accent-hover">
-          ← Back to projects
-        </Link>
-      </p>
+        </div>
+      </Container>
     </main>
   );
 }
 
-function Section({
+function CaseBlock({
   title,
   children,
 }: {
@@ -146,18 +163,23 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section className="mt-12 max-w-3xl">
-      <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-      <div className="mt-4 text-base leading-relaxed text-foreground/90">{children}</div>
+    <section className="mt-14">
+      <h2 className="text-label text-ink-muted">{title}</h2>
+      <div className="mt-4">{children}</div>
     </section>
   );
 }
 
-function BulletList({ items }: { items: string[] }) {
+function LineList({ items }: { items: string[] }) {
   return (
-    <ul className="list-disc space-y-2 pl-5">
+    <ul>
       {items.map((item) => (
-        <li key={item}>{item}</li>
+        <li
+          key={item}
+          className="border-t border-rule py-4 text-body text-ink-muted first:border-t-0"
+        >
+          {item}
+        </li>
       ))}
     </ul>
   );
