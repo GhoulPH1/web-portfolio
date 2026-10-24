@@ -42,6 +42,83 @@ export function PhoneIcon({ className = "size-4", title }: IconProps) {
   );
 }
 
+/** Stroke arrows — avoid Unicode glyphs that render as emoji on iOS. */
+export function ArrowUpRightIcon({ className = "size-3.5", title }: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden={title ? undefined : true}
+      role={title ? "img" : undefined}
+    >
+      {title ? <title>{title}</title> : null}
+      <path d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10" />
+    </svg>
+  );
+}
+
+export function ArrowRightIcon({ className = "size-3.5", title }: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden={title ? undefined : true}
+      role={title ? "img" : undefined}
+    >
+      {title ? <title>{title}</title> : null}
+      <path d="M3.5 8h9M8.5 4l4 4-4 4" />
+    </svg>
+  );
+}
+
+export function ArrowDownIcon({ className = "size-3.5", title }: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden={title ? undefined : true}
+      role={title ? "img" : undefined}
+    >
+      {title ? <title>{title}</title> : null}
+      <path d="M8 3.5v9M4 8.5l4 4 4-4" />
+    </svg>
+  );
+}
+
+export function ArrowUpIcon({ className = "size-3.5", title }: IconProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden={title ? undefined : true}
+      role={title ? "img" : undefined}
+    >
+      {title ? <title>{title}</title> : null}
+      <path d="M8 12.5v-9M4 7.5l4-4 4 4" />
+    </svg>
+  );
+}
+
 export function GitHubIcon({ className = "size-4", title }: IconProps) {
   return (
     <svg

@@ -5,6 +5,7 @@ import {
   rolesOpenTo,
   siteMeta,
 } from "@/content/site";
+import { ArrowUpIcon, ArrowUpRightIcon } from "./Icons";
 import { Container } from "./ui/Container";
 import { Hairline } from "./ui/Hairline";
 import { Reveal } from "./ui/Reveal";
@@ -73,7 +74,10 @@ export function SiteFooter() {
                     rel="noopener noreferrer"
                     className="transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:hover:text-accent-on-dark focus-visible:text-accent-on-dark"
                   >
-                    {profile.label} ↗
+                    <span className="inline-flex items-center gap-1.5">
+                      {profile.label}
+                      <ArrowUpRightIcon className="size-3" />
+                    </span>
                     <span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 </li>
@@ -91,7 +95,10 @@ export function SiteFooter() {
               href="#main"
               className="text-label text-white/70 transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:hover:text-accent-on-dark focus-visible:text-accent-on-dark"
             >
-              Back to top ↑
+              <span className="inline-flex items-center gap-1.5">
+                Back to top
+                <ArrowUpIcon className="size-3" />
+              </span>
             </a>
           </div>
         </Reveal>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { ScreenshotFigure } from "../../components/ScreenshotFigure";
 import { BackLink } from "../../components/ui/BackLink";
@@ -41,124 +42,149 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ProjectCaseStudyPage({ params }: PageProps) {
+export default function ProjectCaseStudyPage({ params }: PageProps) {
+  return (
+    <main id="main" className="bg-bg">
+      <Container className="py-16 md:py-24 lg:py-28">
+        <Suspense fallback={<CaseStudyFallback />}>
+          <CaseStudyContent params={params} />
+        </Suspense>
+      </Container>
+    </main>
+  );
+}
+
+function CaseStudyFallback() {
+  return (
+    <div className="grid gap-12 lg:grid-cols-12 lg:gap-14" aria-hidden>
+      <div className="lg:col-span-4">
+        <div className="h-16 w-24 bg-bg-alt" />
+        <div className="mt-4 h-10 w-48 bg-bg-alt" />
+        <div className="mt-4 h-20 w-full max-w-sm bg-bg-alt" />
+      </div>
+      <div className="space-y-8 lg:col-span-8">
+        <div className="h-32 bg-bg-alt" />
+        <div className="h-48 bg-bg-alt" />
+      </div>
+    </div>
+  );
+}
+
+async function CaseStudyContent({ params }: PageProps) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
   const all = getAllProjects();
   const currentIndex = all.findIndex((p) => p.slug === slug);
-  const next = currentIndex >= 0 ? all[(currentIndex + 1) % all.length] : undefined;
+  const next =
+    currentIndex >= 0 ? all[(currentIndex + 1) % all.length] : undefined;
   const index = indexMap[project.slug] ?? "00";
   const stack = project.technologies.join(" / ");
 
   return (
-    <main id="main" className="bg-bg">
-      <Container className="py-16 md:py-24 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
-          <aside className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
-            <Reveal>
-              <p className="font-[family-name:var(--font-outfit)] text-6xl font-light tracking-tight text-ink-muted md:text-7xl">
-                {index}
-              </p>
-              <h1 className="text-h1 mt-4">{project.title}</h1>
-              <p className="text-body text-lg text-ink-muted">{project.summary}</p>
-              <MetaList
-                className="mt-8"
-                items={[
-                  { label: "Project", value: project.role },
-                  { label: "Stack", value: stack },
-                  {
-                    label: "Status",
-                    value:
-                      project.status === "completed"
-                        ? "Completed"
-                        : project.status,
-                  },
-                ]}
-              />
-              <BackLink href="/" label="Home" className="mt-10" />
-            </Reveal>
-          </aside>
+    <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
+      <aside className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+        <Reveal>
+          <p className="font-[family-name:var(--font-outfit)] text-6xl font-light tracking-tight text-ink-muted md:text-7xl">
+            {index}
+          </p>
+          <h1 className="text-h1 mt-4">{project.title}</h1>
+          <p className="text-body text-lg text-ink-muted">{project.summary}</p>
+          <MetaList
+            className="mt-8"
+            items={[
+              { label: "Project", value: project.role },
+              { label: "Stack", value: stack },
+              {
+                label: "Status",
+                value:
+                  project.status === "completed"
+                    ? "Completed"
+                    : project.status,
+              },
+            ]}
+          />
+          <BackLink href="/" label="Home" className="mt-10" />
+        </Reveal>
+      </aside>
 
-          <div className="lg:col-span-8">
-            {project.problem ? (
-              <CaseBlock title="Purpose">
-                <p className="text-body text-ink-muted">{project.problem}</p>
-              </CaseBlock>
-            ) : null}
+      <div className="lg:col-span-8">
+        {project.problem ? (
+          <CaseBlock title="Purpose">
+            <p className="text-body text-ink-muted">{project.problem}</p>
+          </CaseBlock>
+        ) : null}
 
-            {project.contributions.length > 0 ? (
-              <CaseBlock title="What I Worked On">
-                <LineList items={project.contributions} />
-              </CaseBlock>
-            ) : null}
+        {project.contributions.length > 0 ? (
+          <CaseBlock title="What I Worked On">
+            <LineList items={project.contributions} />
+          </CaseBlock>
+        ) : null}
 
-            {project.features.length > 0 ? (
-              <CaseBlock title="Implemented features">
-                <ol className="space-y-0">
-                  {project.features.map((feature, i) => (
-                    <Reveal
-                      key={feature}
-                      index={Math.min(i, 5)}
-                      as="li"
-                      className="grid grid-cols-[3rem_1fr] gap-4 border-t border-rule py-4 first:border-t-0"
-                    >
-                      <span className="text-label text-ink-muted">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="text-body max-w-none text-ink-muted">
-                        {feature}
-                      </span>
-                    </Reveal>
-                  ))}
-                </ol>
-              </CaseBlock>
-            ) : null}
+        {project.features.length > 0 ? (
+          <CaseBlock title="Implemented features">
+            <ol className="space-y-0">
+              {project.features.map((feature, i) => (
+                <Reveal
+                  key={feature}
+                  index={Math.min(i, 5)}
+                  as="li"
+                  className="grid grid-cols-[3rem_1fr] gap-4 border-t border-rule py-4 first:border-t-0"
+                >
+                  <span className="text-label text-ink-muted">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-body max-w-none text-ink-muted">
+                    {feature}
+                  </span>
+                </Reveal>
+              ))}
+            </ol>
+          </CaseBlock>
+        ) : null}
 
-            {project.screenshots.length > 0 ? (
-              <CaseBlock title="Screenshots">
-                <div className="grid gap-8">
-                  {project.screenshots.map((shot) => (
-                    <ScreenshotFigure key={shot.src} screenshot={shot} />
-                  ))}
-                </div>
-              </CaseBlock>
-            ) : null}
+        {project.screenshots.length > 0 ? (
+          <CaseBlock title="Screenshots">
+            <div className="grid gap-8">
+              {project.screenshots.map((shot) => (
+                <ScreenshotFigure key={shot.src} screenshot={shot} />
+              ))}
+            </div>
+          </CaseBlock>
+        ) : null}
 
-            {project.limitations.length > 0 ? (
-              <CaseBlock title="Limitations">
-                <LineList items={project.limitations} />
-              </CaseBlock>
-            ) : null}
+        {project.limitations.length > 0 ? (
+          <CaseBlock title="Limitations">
+            <LineList items={project.limitations} />
+          </CaseBlock>
+        ) : null}
 
-            {project.links.length > 0 ? (
-              <CaseBlock title="Links">
-                <ul className="space-y-3">
-                  {project.links.map((link, i) => (
-                    <Reveal key={link.href} index={Math.min(i, 5)} as="li">
-                      <TextLink
-                        href={link.href}
-                        external={link.kind !== "other"}
-                      >
-                        {link.label}
-                      </TextLink>
-                    </Reveal>
-                  ))}
-                </ul>
-              </CaseBlock>
-            ) : null}
+        {project.links.length > 0 ? (
+          <CaseBlock title="Links">
+            <ul className="space-y-3">
+              {project.links.map((link, i) => (
+                <Reveal key={link.href} index={Math.min(i, 5)} as="li">
+                  <TextLink
+                    href={link.href}
+                    external={link.kind !== "other"}
+                  >
+                    {link.label}
+                  </TextLink>
+                </Reveal>
+              ))}
+            </ul>
+          </CaseBlock>
+        ) : null}
 
-            {next && next.slug !== project.slug ? (
-              <NextProjectLink
-                project={next}
-                index={indexMap[next.slug] ?? "00"}
-              />
-            ) : null}
-          </div>
-        </div>
-      </Container>
-    </main>
+        {next && next.slug !== project.slug ? (
+          <NextProjectLink
+            project={next}
+            index={indexMap[next.slug] ?? "00"}
+          />
+        ) : null}
+      </div>
+    </div>
   );
 }
 

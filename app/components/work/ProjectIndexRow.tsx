@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/content/types";
+import { ArrowRightIcon } from "../Icons";
 import { Reveal } from "../ui/Reveal";
 
 type Props = {
@@ -49,9 +50,9 @@ export function ProjectIndexRow({ project, index, delayMs = 0 }: Props) {
           ) : null}
           <span
             aria-hidden
-            className="text-ink transition-transform duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:translate-x-[var(--hover-nudge)] group-focus-visible:translate-x-[var(--hover-nudge)]"
+            className="inline-flex text-ink transition-transform duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:translate-x-[var(--hover-nudge)] group-focus-visible:translate-x-[var(--hover-nudge)]"
           >
-            →
+            <ArrowRightIcon className="size-3.5" />
           </span>
         </div>
       </Link>

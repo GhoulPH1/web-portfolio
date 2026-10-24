@@ -1,5 +1,6 @@
 import { FeaturedProject } from "./components/work/FeaturedProject";
 import { ProjectIndexRow } from "./components/work/ProjectIndexRow";
+import { ArrowUpRightIcon } from "./components/Icons";
 import { Button } from "./components/ui/Button";
 import { Hairline } from "./components/ui/Hairline";
 import { MaskLine } from "./components/ui/MaskLine";
@@ -55,7 +56,9 @@ export default function Home() {
           <div className="md:col-span-12">
             <Hairline draw className="mb-6" />
             <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-              <TextLink href="#work">Selected work ↓</TextLink>
+              <TextLink href="#work" trailing="down">
+                Selected work
+              </TextLink>
               {resume.available && resume.href ? (
                 <TextLink href={resume.href} external>
                   Résumé
@@ -127,9 +130,9 @@ export default function Home() {
                 {contact.email}
                 <span
                   aria-hidden
-                  className="transition-transform duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:translate-x-[var(--hover-nudge)] group-focus-visible:translate-x-[var(--hover-nudge)]"
+                  className="inline-flex transition-transform duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:translate-x-[var(--hover-nudge)] group-focus-visible:translate-x-[var(--hover-nudge)]"
                 >
-                  ↗
+                  <ArrowUpRightIcon className="size-4 md:size-5" />
                 </span>
               </a>
             </p>
@@ -147,7 +150,10 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="text-label text-white/70 transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:hover:text-accent-on-dark focus-visible:text-accent-on-dark"
                     >
-                      {profile.label} ↗
+                      <span className="inline-flex items-center gap-1.5">
+                        {profile.label}
+                        <ArrowUpRightIcon className="size-3" />
+                      </span>
                       <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   </li>

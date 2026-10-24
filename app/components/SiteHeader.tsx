@@ -11,6 +11,7 @@ import {
 } from "react";
 import { getAllProjects } from "@/content/projects";
 import { contact, gmailComposeUrl, resume } from "@/content/site";
+import { ArrowRightIcon, ArrowUpRightIcon } from "./Icons";
 import { Container } from "./ui/Container";
 import { ThemeToggle } from "./ui/ThemeToggle";
 
@@ -161,9 +162,13 @@ function SubmenuLink({
       </span>
       <span
         aria-hidden
-        className="text-ink transition-transform duration-200 group-hover:translate-x-0.5"
+        className="inline-flex text-ink transition-transform duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:translate-x-[var(--hover-nudge)]"
       >
-        {item.external ? "↗" : "→"}
+        {item.external ? (
+          <ArrowUpRightIcon className="size-3.5" />
+        ) : (
+          <ArrowRightIcon className="size-3.5" />
+        )}
       </span>
     </>
   );
@@ -521,7 +526,10 @@ export function SiteHeader() {
                 rel="noopener noreferrer"
                 className="text-label text-ink-muted transition-colors hover:text-ink"
               >
-                Résumé ↗
+                <span className="inline-flex items-center gap-1.5">
+                  Résumé
+                  <ArrowUpRightIcon className="size-3" />
+                </span>
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
             ) : null}
@@ -568,7 +576,10 @@ export function SiteHeader() {
                       className="text-label text-ink-muted transition-colors hover:text-ink"
                       onClick={handleNavIntent}
                     >
-                      View {activeFlyout.label.toLowerCase()} →
+                      <span className="inline-flex items-center gap-1.5">
+                        View {activeFlyout.label.toLowerCase()}
+                        <ArrowRightIcon className="size-3" />
+                      </span>
                     </Link>
                   </p>
                 </div>
@@ -672,7 +683,10 @@ export function SiteHeader() {
                 className="mt-auto border-t border-rule py-8 text-label"
                 onClick={() => setMenuOpen(false)}
               >
-                Résumé ↗
+                <span className="inline-flex items-center gap-1.5">
+                  Résumé
+                  <ArrowUpRightIcon className="size-3" />
+                </span>
               </a>
             ) : null}
           </nav>
