@@ -144,22 +144,24 @@ function SubmenuLink({
   onNavigate?: (href: string, external?: boolean) => void;
 }) {
   const classes =
-    "group grid grid-cols-[2.5rem_1fr_auto] items-start gap-3 border-t border-rule py-4 first:border-t-0 md:grid-cols-[3rem_1fr_auto] md:gap-5 md:py-5";
+    "group grid grid-cols-[2rem_1fr_auto] items-center gap-3 border-t border-rule py-2 first:border-t-0 md:grid-cols-[2.5rem_1fr_auto] md:gap-4 md:py-2.5";
 
   const content = (
     <>
-      <span className="text-label pt-1 text-ink-muted">{item.index ?? "—"}</span>
+      <span className="text-label text-ink-muted">{item.index ?? "—"}</span>
       <span className="min-w-0">
-        <span className="block font-[family-name:var(--font-outfit)] text-base font-medium tracking-tight text-ink transition-colors duration-200 group-hover:text-accent md:text-lg">
+        <span className="block font-[family-name:var(--font-outfit)] text-sm font-medium tracking-tight text-ink transition-colors duration-200 group-hover:text-accent md:text-base">
           {item.label}
+          {item.description ? (
+            <span className="ml-2 font-normal text-ink-muted">
+              — {item.description}
+            </span>
+          ) : null}
         </span>
-        {item.description ? (
-          <span className="mt-1 block text-sm text-ink-muted">{item.description}</span>
-        ) : null}
       </span>
       <span
         aria-hidden
-        className="pt-1 text-ink transition-transform duration-200 group-hover:translate-x-0.5"
+        className="text-ink transition-transform duration-200 group-hover:translate-x-0.5"
       >
         {item.external ? "↗" : "→"}
       </span>
@@ -192,43 +194,6 @@ function SubmenuLink({
   );
 }
 
-function isSamePageSectionNav(href: string, pathname: string) {
-  if (href.startsWith("#")) return true;
-  if (pathname === "/" && /^\/#(work|about|contact)$/.test(href)) return true;
-  if (pathname.startsWith("/about-me") && href.startsWith("/about-me#")) {
-    return true;
-  }
-  return false;
-}
-
-function waitForScrollSettle(onSettled: () => void) {
-  let settled = false;
-  let idleTimer: ReturnType<typeof setTimeout> | null = null;
-
-  const finish = () => {
-    if (settled) return;
-    settled = true;
-    if (idleTimer) clearTimeout(idleTimer);
-    window.removeEventListener("scrollend", finish);
-    window.removeEventListener("scroll", onScroll);
-    clearTimeout(fallback);
-    onSettled();
-  };
-
-  const onScroll = () => {
-    if (idleTimer) clearTimeout(idleTimer);
-    idleTimer = setTimeout(finish, 140);
-  };
-
-  const fallback = setTimeout(finish, 900);
-
-  requestAnimationFrame(() => {
-    window.addEventListener("scrollend", finish, { once: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
-    idleTimer = setTimeout(finish, 160);
-  });
-}
-
 export function SiteHeader() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -259,12 +224,13 @@ export function SiteHeader() {
   const openFlyout = (key: NavKey, fromPointer = true) => {
     if (fromPointer && closedByNavRef.current) return;
     clearCloseTimer();
-    setFlyout(key);
+    setFlyout((current) => (current === key ? current : key));
   };
 
+  /** Brief grace only for pointer jitter at the region edge — not for navigation. */
   const scheduleCloseFlyout = () => {
     clearCloseTimer();
-    closeTimerRef.current = setTimeout(() => setFlyout(null), 220);
+    closeTimerRef.current = setTimeout(() => setFlyout(null), 80);
   };
 
   const closeFlyout = () => {
@@ -272,21 +238,9 @@ export function SiteHeader() {
     setFlyout(null);
   };
 
-  const lockClosedUntilPointerExit = () => {
+  const handleNavIntent = (_href?: string, _external?: boolean) => {
     closedByNavRef.current = true;
-  };
-
-  const handleNavIntent = (href: string, external = false) => {
-    lockClosedUntilPointerExit();
-
-    if (external || !isSamePageSectionNav(href, pathname)) {
-      closeFlyout();
-      return;
-    }
-
-    waitForScrollSettle(() => {
-      closeFlyout();
-    });
+    closeFlyout();
   };
 
   const handleNavRegionMouseLeave = () => {
@@ -596,20 +550,20 @@ export function SiteHeader() {
         {activeFlyout ? (
           <div
             id={panelId}
-            className="absolute inset-x-0 top-full z-50 hidden animate-[nav-flyout_200ms_ease-out] border-b border-t border-rule bg-bg md:block"
+            className="absolute inset-x-0 top-full z-50 hidden h-auto animate-[nav-flyout_120ms_ease-out] overflow-visible border-b border-t border-rule bg-bg md:block"
             role="region"
             aria-label={`${activeFlyout.label} submenu`}
           >
-            <Container className="py-8 md:py-10">
-              <div className="grid gap-8 md:grid-cols-12 md:gap-10">
-                <div className="md:col-span-4">
+            <Container className="py-4 md:py-5">
+              <div className="grid gap-5 md:grid-cols-12 md:items-start md:gap-8">
+                <div className="md:col-span-3">
                   <p className="text-label text-ink-muted">
                     {activeFlyout.panelLabel}
                   </p>
-                  <p className="mt-4 font-[family-name:var(--font-outfit)] text-2xl font-light tracking-tight text-ink md:text-3xl">
+                  <p className="mt-2 font-[family-name:var(--font-outfit)] text-xl font-light tracking-tight text-ink md:text-2xl">
                     {activeFlyout.label}
                   </p>
-                  <p className="mt-6">
+                  <p className="mt-3">
                     <Link
                       href={mainHref(activeFlyout)}
                       className="text-label text-ink-muted transition-colors hover:text-ink"
@@ -619,7 +573,7 @@ export function SiteHeader() {
                     </Link>
                   </p>
                 </div>
-                <div className="md:col-span-8">
+                <div className="md:col-span-9">
                   <ul>
                     {activeFlyout.links.map((link) => (
                       <li key={`${activeFlyout.key}-${link.href}-${link.label}`}>
