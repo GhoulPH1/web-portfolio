@@ -76,6 +76,7 @@ export interface EducationItem {
   /** Public status label, e.g. "Currently pursuing" — never "undergraduate" */
   statusLabel: string;
   coursework: string[];
+  exposure:string[];
   honors: string[];
 }
 

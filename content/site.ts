@@ -63,6 +63,7 @@ export const rolesOpenTo =
 
 export const aboutCredentials =
   "Currently pursuing a Bachelor of Science in Information Technology at Gordon College.";
+  
 
 export const aboutDirection =
   "Developing my technical skills through continuous learning and practical experience, with the goal of applying IT to solve real-world problems.";

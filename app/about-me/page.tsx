@@ -72,6 +72,8 @@ export default function AboutMePage() {
                   <p className="mt-2 text-sm text-ink-muted">
                     {edu.statusLabel} · {edu.institution}, {edu.location}
                   </p>
+                  <Reveal
+                        className="max-w-none py-3 text-base text-ink-muted">
                   {edu.coursework.length > 0 ? (
                     <div className="mt-6">
                       <p className="text-label text-ink-muted">Coursework</p>
@@ -80,6 +82,19 @@ export default function AboutMePage() {
                       </p>
                     </div>
                   ) : null}
+                  </Reveal>
+                  
+                  <Reveal
+                        className="max-w-none mt-3 border-t border-rule py-3 text-base text-ink-muted first:border-t-0">
+                  {edu.exposure.length > 0 ? (
+                    <div className="mt-3">
+                      <p className="text-label text-ink-muted">Introduced to</p>
+                      <p className="mt-3 max-w-none text-base text-ink-muted">
+                        {edu.exposure.join(", ")}
+                      </p>
+                    </div>
+                  ) : null}
+                 </Reveal>
                 </div>
               </section>
             </Reveal>

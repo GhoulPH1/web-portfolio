@@ -77,6 +77,18 @@ export const skillCategories: SkillCategory[] = [
         level: "foundational",
         // evidenceNote: "Basic familiarity; not demonstrated in the featured projects.",
       },
+      {
+        id: "rest-api",
+        name: "RESTful API",
+        level: "used-in-completed-project",
+        // evidenceNote: "Basic familiarity; not demonstrated in the featured projects.",
+      },
+      // {
+      //   id: "crud-operations",
+      //   name: "CRUD Operations",
+      //   level: "used-in-completed-project",
+      //   // evidenceNote: "Basic familiarity; not demonstrated in the featured projects.",
+      // },
     ],
   },
   {
@@ -106,6 +118,7 @@ export const skillCategories: SkillCategory[] = [
       { id: "git", name: "Git", level: "practical-familiarity" },
       { id: "github", name: "GitHub", level: "practical-familiarity" },
       { id: "xampp", name: "XAMPP", level: "practical-familiarity" },
+      { id: "postman", name: "Postman", level: "practical-familiarity" },
       { id: "devtools", name: "Browser Developer Tools", level: "practical-familiarity" },
     ],
   },

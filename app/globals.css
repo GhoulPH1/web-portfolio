@@ -12,6 +12,16 @@
   --rule-dark: #2a2a2a;
   --accent-on-dark: #8fa3c7;
   --space: 0.5rem;
+  /* Primary buttons — same in both themes */
+  --btn: #0e0e0e;
+  --btn-text: #ffffff;
+  --btn-hover: #1b2a4a;
+  --btn-surface: #ffffff;
+  --btn-edge: #0e0e0e;
+  /* Contact-band button: soft blue on near-black (light theme) */
+  --btn-on-dark: #8fa3c7;
+  --btn-on-dark-text: #0e0e0e;
+  --btn-on-dark-hover: #0f1a30;
 
   /* Motion tokens — single vocabulary sitewide */
   --dur-fast: 150ms;
@@ -36,6 +46,11 @@
   --bg-dark: #14213d;
   --rule-dark: #2f3a55;
   --accent-on-dark: #b8c6de;
+  --btn-edge: #3a3a3a;
+  /* Contact-band button: reuse primary palette for contrast on navy band */
+  --btn-on-dark: var(--btn);
+  --btn-on-dark-text: var(--btn-text);
+  --btn-on-dark-hover: var(--btn-hover);
 }
 
 @theme inline {
@@ -57,6 +72,14 @@
   --duration-fast: var(--dur-fast);
   --duration-base: var(--dur-base);
   --duration-slow: var(--dur-slow);
+  --color-btn: var(--btn);
+  --color-btn-text: var(--btn-text);
+  --color-btn-hover: var(--btn-hover);
+  --color-btn-surface: var(--btn-surface);
+  --color-btn-edge: var(--btn-edge);
+  --color-btn-on-dark: var(--btn-on-dark);
+  --color-btn-on-dark-text: var(--btn-on-dark-text);
+  --color-btn-on-dark-hover: var(--btn-on-dark-hover);
 }
 
 html {

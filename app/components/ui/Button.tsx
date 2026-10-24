@@ -20,10 +20,10 @@ export function Button({
     "inline-flex min-h-11 items-center justify-center px-5 py-2.5 text-label transition-[color,background-color,border-color,transform,opacity] duration-[var(--dur-fast)] ease-[var(--ease-out)] active:translate-y-px active:opacity-85";
   const styles =
     variant === "onDark"
-      ? "border-0 bg-accent-on-dark text-[#0e0e0e] [@media(hover:hover)]:hover:bg-accent-deep [@media(hover:hover)]:hover:text-white focus-visible:bg-accent-deep focus-visible:text-white"
+      ? "border border-transparent bg-btn-on-dark text-btn-on-dark-text [@media(hover:hover)]:hover:bg-btn-on-dark-hover [@media(hover:hover)]:hover:text-btn-text focus-visible:bg-btn-on-dark-hover focus-visible:text-btn-text"
       : variant === "primary"
-        ? "bg-ink text-bg [@media(hover:hover)]:hover:bg-accent focus-visible:bg-accent"
-        : "border border-ink text-ink [@media(hover:hover)]:hover:border-accent [@media(hover:hover)]:hover:text-accent focus-visible:border-accent focus-visible:text-accent";
+        ? "border border-btn-edge bg-btn text-btn-text [@media(hover:hover)]:hover:border-btn-hover [@media(hover:hover)]:hover:bg-btn-hover focus-visible:border-btn-hover focus-visible:bg-btn-hover"
+        : "border border-btn bg-btn-surface text-btn [@media(hover:hover)]:hover:border-btn-hover [@media(hover:hover)]:hover:text-btn-hover focus-visible:border-btn-hover focus-visible:text-btn-hover";
 
   const classes = `${base} ${styles} ${className}`.trim();
 
