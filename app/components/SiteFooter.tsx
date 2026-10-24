@@ -88,7 +88,7 @@ export function SiteFooter() {
 
         <Hairline dark draw className="mt-12" />
 
-        <Reveal index={3}>
+        {/* <Reveal index={2}> */}
           <div className="mt-6 flex flex-wrap items-center justify-between gap-4 text-xs text-white/50">
             <p>© {siteMeta.siteName}</p>
             <a
@@ -101,7 +101,7 @@ export function SiteFooter() {
               </span>
             </a>
           </div>
-        </Reveal>
+        {/* </Reveal> */}
       </Container>
     </footer>
   );
