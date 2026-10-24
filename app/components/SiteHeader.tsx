@@ -141,7 +141,7 @@ function SubmenuLink({
   onNavigate,
 }: {
   item: SubLink;
-  onNavigate?: (href: string, external?: boolean) => void;
+  onNavigate?: () => void;
 }) {
   const classes =
     "group grid grid-cols-[2rem_1fr_auto] items-center gap-3 border-t border-rule py-2 first:border-t-0 md:grid-cols-[2.5rem_1fr_auto] md:gap-4 md:py-2.5";
@@ -175,7 +175,7 @@ function SubmenuLink({
         className={classes}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => onNavigate?.(item.href, true)}
+        onClick={onNavigate}
       >
         {content}
         <span className="sr-only"> (opens in a new tab)</span>
@@ -184,11 +184,7 @@ function SubmenuLink({
   }
 
   return (
-    <Link
-      href={item.href}
-      className={classes}
-      onClick={() => onNavigate?.(item.href, false)}
-    >
+    <Link href={item.href} className={classes} onClick={onNavigate}>
       {content}
     </Link>
   );
@@ -238,7 +234,7 @@ export function SiteHeader() {
     setFlyout(null);
   };
 
-  const handleNavIntent = (_href?: string, _external?: boolean) => {
+  const handleNavIntent = () => {
     closedByNavRef.current = true;
     closeFlyout();
   };
@@ -257,8 +253,8 @@ export function SiteHeader() {
 
   useEffect(() => {
     if (!isHome) {
-      setBrandProgress(1);
       brandProgressRef.current = 1;
+      queueMicrotask(() => setBrandProgress(1));
       return;
     }
 
@@ -314,7 +310,7 @@ export function SiteHeader() {
 
   useEffect(() => {
     if (pathname !== "/") {
-      setObservedHash("");
+      queueMicrotask(() => setObservedHash(""));
       return;
     }
 
@@ -434,7 +430,10 @@ export function SiteHeader() {
     if (!flyout) return;
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeFlyout();
+      if (e.key === "Escape") {
+        clearCloseTimer();
+        setFlyout(null);
+      }
     };
 
     window.addEventListener("keydown", onKey);
@@ -509,7 +508,7 @@ export function SiteHeader() {
                   aria-controls={panelId}
                   onMouseEnter={() => openFlyout(item.key, true)}
                   onFocus={() => openFlyout(item.key, false)}
-                  onClick={() => handleNavIntent(href)}
+                  onClick={handleNavIntent}
                 >
                   {item.label}
                 </Link>
@@ -550,7 +549,7 @@ export function SiteHeader() {
         {activeFlyout ? (
           <div
             id={panelId}
-            className="absolute inset-x-0 top-full z-50 hidden h-auto animate-[nav-flyout_120ms_ease-out] overflow-visible border-b border-t border-rule bg-bg md:block"
+            className="nav-flyout-enter absolute inset-x-0 top-full z-50 hidden h-auto overflow-visible border-b border-t border-rule bg-bg md:block"
             role="region"
             aria-label={`${activeFlyout.label} submenu`}
           >
@@ -567,7 +566,7 @@ export function SiteHeader() {
                     <Link
                       href={mainHref(activeFlyout)}
                       className="text-label text-ink-muted transition-colors hover:text-ink"
-                      onClick={() => handleNavIntent(mainHref(activeFlyout))}
+                      onClick={handleNavIntent}
                     >
                       View {activeFlyout.label.toLowerCase()} →
                     </Link>

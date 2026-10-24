@@ -8,6 +8,7 @@ import { BackLink } from "../../components/ui/BackLink";
 import { Container } from "../../components/ui/Container";
 import { Hairline } from "../../components/ui/Hairline";
 import { MetaList } from "../../components/ui/MetaList";
+import { Reveal } from "../../components/ui/Reveal";
 import { TextLink } from "../../components/ui/TextLink";
 import type { Project } from "@/content/types";
 import {
@@ -55,29 +56,32 @@ export default async function ProjectCaseStudyPage({ params }: PageProps) {
     <main id="main" className="bg-bg">
       <Container className="py-16 md:py-24 lg:py-28">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
-          <aside className="lg:col-span-4 lg:self-start lg:sticky lg:top-24">
-            <p className="font-[family-name:var(--font-outfit)] text-6xl font-light tracking-tight text-ink-muted md:text-7xl">
-              {index}
-            </p>
-            <h1 className="text-h1 mt-4">{project.title}</h1>
-            <p className="text-body text-ink-muted text-lg">{project.summary}</p>
-            <MetaList
-              className="mt-8"
-              items={[
-                { label: "Project", value: project.role },
-                { label: "Stack", value: stack },
-                {
-                  label: "Status",
-                  value:
-                    project.status === "completed" ? "Completed" : project.status,
-                },
-              ]}
-            />
-            <BackLink href="/" label="Home" className="mt-10" />
+          <aside className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+            <Reveal>
+              <p className="font-[family-name:var(--font-outfit)] text-6xl font-light tracking-tight text-ink-muted md:text-7xl">
+                {index}
+              </p>
+              <h1 className="text-h1 mt-4">{project.title}</h1>
+              <p className="text-body text-lg text-ink-muted">{project.summary}</p>
+              <MetaList
+                className="mt-8"
+                items={[
+                  { label: "Project", value: project.role },
+                  { label: "Stack", value: stack },
+                  {
+                    label: "Status",
+                    value:
+                      project.status === "completed"
+                        ? "Completed"
+                        : project.status,
+                  },
+                ]}
+              />
+              <BackLink href="/" label="Home" className="mt-10" />
+            </Reveal>
           </aside>
 
           <div className="lg:col-span-8">
-
             {project.problem ? (
               <CaseBlock title="Purpose">
                 <p className="text-body text-ink-muted">{project.problem}</p>
@@ -94,17 +98,19 @@ export default async function ProjectCaseStudyPage({ params }: PageProps) {
               <CaseBlock title="Implemented features">
                 <ol className="space-y-0">
                   {project.features.map((feature, i) => (
-                    <li
+                    <Reveal
                       key={feature}
+                      index={Math.min(i, 5)}
+                      as="li"
                       className="grid grid-cols-[3rem_1fr] gap-4 border-t border-rule py-4 first:border-t-0"
                     >
                       <span className="text-label text-ink-muted">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <span className="text-body text-ink-muted max-w-none">
+                      <span className="text-body max-w-none text-ink-muted">
                         {feature}
                       </span>
-                    </li>
+                    </Reveal>
                   ))}
                 </ol>
               </CaseBlock>
@@ -129,12 +135,15 @@ export default async function ProjectCaseStudyPage({ params }: PageProps) {
             {project.links.length > 0 ? (
               <CaseBlock title="Links">
                 <ul className="space-y-3">
-                  {project.links.map((link) => (
-                    <li key={link.href}>
-                      <TextLink href={link.href} external={link.kind !== "other"}>
+                  {project.links.map((link, i) => (
+                    <Reveal key={link.href} index={Math.min(i, 5)} as="li">
+                      <TextLink
+                        href={link.href}
+                        external={link.kind !== "other"}
+                      >
                         {link.label}
                       </TextLink>
-                    </li>
+                    </Reveal>
                   ))}
                 </ul>
               </CaseBlock>
@@ -163,10 +172,11 @@ function NextProjectLink({
   const shot = project.screenshots[0];
 
   return (
-    <div className="mt-20 md:mt-24">
-      <Hairline />
+    <Reveal className="mt-20 md:mt-24">
+      <Hairline draw />
       <Link
         href={project.caseStudyPath}
+        prefetch
         className="group mt-8 grid gap-6 py-2 sm:grid-cols-[1fr_auto] sm:items-end sm:gap-10"
       >
         <div className="min-w-0">
@@ -175,7 +185,7 @@ function NextProjectLink({
             <span className="font-[family-name:var(--font-outfit)] text-3xl font-light tracking-tight text-ink-muted md:text-4xl">
               {index}
             </span>
-            <h2 className="font-[family-name:var(--font-outfit)] text-2xl font-medium tracking-tight text-ink transition-colors duration-200 group-hover:text-accent md:text-3xl">
+            <h2 className="font-[family-name:var(--font-outfit)] text-2xl font-medium tracking-tight text-ink transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:text-accent group-focus-visible:text-accent md:text-3xl">
               {project.title}
             </h2>
           </div>
@@ -192,22 +202,18 @@ function NextProjectLink({
                 alt=""
                 width={shot.width}
                 height={shot.height}
-                className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.03]"
+                className="h-full w-full object-cover object-top transition-transform duration-[var(--dur-base)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:scale-[var(--image-scale)] group-focus-visible:scale-[var(--image-scale)]"
                 sizes="160px"
-              />
-              <span
-                aria-hidden
-                className="absolute inset-0 bg-accent/0 transition-colors duration-200 group-hover:bg-accent/10"
               />
             </div>
           ) : null}
           <span
             aria-hidden
-            className="mb-1 inline-flex size-9 shrink-0 items-center justify-center border border-rule text-ink transition-colors duration-200 group-hover:border-accent group-hover:bg-accent group-hover:text-bg"
+            className="mb-1 inline-flex size-9 shrink-0 items-center justify-center border border-rule text-ink transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:border-accent [@media(hover:hover)]:group-hover:bg-accent [@media(hover:hover)]:group-hover:text-bg group-focus-visible:border-accent group-focus-visible:bg-accent group-focus-visible:text-bg"
           >
             <svg
               viewBox="0 0 16 16"
-              className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
+              className="size-3.5 transition-transform duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:translate-x-[var(--hover-nudge)] group-focus-visible:translate-x-[var(--hover-nudge)]"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.75"
@@ -219,8 +225,8 @@ function NextProjectLink({
           </span>
         </div>
       </Link>
-      <Hairline className="mt-8" />
-    </div>
+      <Hairline draw className="mt-8" />
+    </Reveal>
   );
 }
 
@@ -232,23 +238,27 @@ function CaseBlock({
   children: ReactNode;
 }) {
   return (
-    <section className="mt-14">
-      <h2 className="text-label text-ink-muted">{title}</h2>
-      <div className="mt-4">{children}</div>
-    </section>
+    <Reveal>
+      <section className="mt-14">
+        <h2 className="text-label text-ink-muted">{title}</h2>
+        <div className="mt-4">{children}</div>
+      </section>
+    </Reveal>
   );
 }
 
 function LineList({ items }: { items: string[] }) {
   return (
     <ul>
-      {items.map((item) => (
-        <li
+      {items.map((item, i) => (
+        <Reveal
           key={item}
+          index={Math.min(i, 5)}
+          as="li"
           className="border-t border-rule py-4 text-body text-ink-muted first:border-t-0"
         >
           {item}
-        </li>
+        </Reveal>
       ))}
     </ul>
   );

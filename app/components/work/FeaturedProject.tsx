@@ -1,5 +1,5 @@
-import Image from "next/image";
 import type { Project } from "@/content/types";
+import { ImageFrame } from "../ui/ImageFrame";
 import { MetaList } from "../ui/MetaList";
 import { Reveal } from "../ui/Reveal";
 import { TextLink } from "../ui/TextLink";
@@ -15,7 +15,7 @@ export function FeaturedProject({ project, index = "01" }: Props) {
 
   return (
     <Reveal>
-      <article className="grid gap-8 lg:grid-cols-12 lg:gap-10">
+      <article className="group grid gap-8 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-4 lg:pt-2">
           <p className="text-label text-ink-muted">{index}</p>
           <h3 className="text-h2 mt-3">{project.title}</h3>
@@ -40,19 +40,17 @@ export function FeaturedProject({ project, index = "01" }: Props) {
         </div>
         <div className="lg:col-span-8">
           {shot ? (
-            <div className="aspect-[16/10] overflow-hidden border border-rule bg-bg-alt">
-              <Image
-                src={shot.src}
-                alt={shot.alt}
-                width={shot.width}
-                height={shot.height}
-                className="h-full w-full object-cover object-top transition-transform duration-300 ease-out hover:scale-[1.02]"
-                sizes="(max-width: 1024px) 100vw, 720px"
-                priority
-              />
-            </div>
+            <ImageFrame
+              src={shot.src}
+              alt={shot.alt}
+              width={shot.width}
+              height={shot.height}
+              sizes="(max-width: 1024px) 100vw, 720px"
+              priority
+              enableHoverScale
+              ratioClassName="aspect-[16/10]"
+            />
           ) : (
-            // Placeholder: no screenshot asset for this project
             <div className="aspect-[16/10] border border-rule bg-bg-alt" />
           )}
         </div>

@@ -12,6 +12,17 @@
   --rule-dark: #2a2a2a;
   --accent-on-dark: #8fa3c7;
   --space: 0.5rem;
+
+  /* Motion tokens — single vocabulary sitewide */
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-slow: 700ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --reveal-y: 14px;
+  --stagger: 60ms;
+  --hover-nudge: 3px;
+  --image-scale: 1.03;
 }
 
 [data-theme="dark"] {
@@ -41,10 +52,79 @@
   --font-sans: var(--font-outfit), system-ui, sans-serif;
   --font-family-display: var(--font-outfit), system-ui, sans-serif;
   --font-family-body: var(--font-outfit), system-ui, sans-serif;
+  --ease-motion-out: var(--ease-out);
+  --ease-motion-in-out: var(--ease-in-out);
+  --duration-fast: var(--dur-fast);
+  --duration-base: var(--dur-base);
+  --duration-slow: var(--dur-slow);
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Progressive enhancement: initial motion states only when JS is active */
+html.js:not([data-reduced-motion]) .motion-reveal:not(.is-visible) {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-y), 0);
+}
+
+html.js:not([data-reduced-motion]) .motion-reveal {
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+  transition-delay: calc(var(--stagger-index, 0) * var(--stagger));
+}
+
+html.js:not([data-reduced-motion]) .motion-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+html.js:not([data-reduced-motion]) .motion-hairline:not(.is-visible) {
+  transform: scaleX(0);
+}
+
+html.js:not([data-reduced-motion]) .motion-hairline {
+  transform-origin: left center;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+html.js:not([data-reduced-motion]) .motion-hairline.is-visible {
+  transform: scaleX(1);
+}
+
+html.js:not([data-reduced-motion]) .motion-mask-line {
+  display: block;
+  overflow: hidden;
+}
+
+html.js:not([data-reduced-motion]) .motion-mask-line > span {
+  display: block;
+  transform: translate3d(0, 100%, 0);
+  transition: transform var(--dur-slow) var(--ease-out);
+  transition-delay: calc(var(--stagger-index, 0) * var(--stagger));
+}
+
+html.js:not([data-reduced-motion]) .motion-mask-line.is-visible > span {
+  transform: translate3d(0, 0, 0);
+}
+
+html.js:not([data-reduced-motion]) .motion-image:not(.is-ready) {
+  opacity: 0;
+  transform: scale(var(--image-scale));
+}
+
+html.js:not([data-reduced-motion]) .motion-image {
+  transform-origin: center center;
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+
+html.js:not([data-reduced-motion]) .motion-image.is-ready {
+  opacity: 1;
+  transform: scale(1);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -58,6 +138,15 @@ html {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .motion-reveal,
+  .motion-hairline,
+  .motion-mask-line > span,
+  .motion-image {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
   }
 }
 
@@ -79,6 +168,7 @@ body *:not(input):not(textarea):not([contenteditable="true"]) {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
+  transition: outline-offset 100ms var(--ease-out);
 }
 
 a {
@@ -141,13 +231,85 @@ a {
   border-top-color: var(--rule-dark);
 }
 
+/* Link underline slide — scaleX only */
+.motion-underline {
+  position: relative;
+}
+
+.motion-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .motion-underline:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+.motion-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.motion-underline.is-active::after {
+  transform: scaleX(1);
+}
+
+.section-cv {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}
+
 @keyframes nav-flyout {
   from {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translate3d(0, -4px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
+}
+
+.nav-flyout-enter {
+  animation: nav-flyout var(--dur-base) var(--ease-in-out);
+}
+
+.nav-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  height: 1px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--accent);
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.nav-progress.is-active {
+  opacity: 1;
+  transform: scaleX(0.7);
+  transition: transform 2s var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.nav-progress.is-done {
+  opacity: 0;
+  transform: scaleX(1);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out) var(--dur-fast);
 }

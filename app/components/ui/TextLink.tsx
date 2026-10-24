@@ -18,25 +18,30 @@ export function TextLink({
 }: Props) {
   const arrow = external ? "↗" : "→";
   const color = dark
-    ? "text-white decoration-accent-on-dark hover:text-accent-on-dark"
-    : "text-ink decoration-rule hover:decoration-accent";
+    ? "text-white hover:text-accent-on-dark"
+    : "text-ink";
 
   const classes =
-    `group inline-flex items-center gap-1.5 border-b border-current pb-0.5 font-[family-name:var(--font-outfit)] text-sm font-medium tracking-wide transition-colors duration-200 ${color} ${className}`.trim();
+    `motion-underline group inline-flex items-center gap-1.5 pb-0.5 font-[family-name:var(--font-outfit)] text-sm font-medium tracking-wide transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] ${color} ${className}`.trim();
 
   const content = (
     <>
       <span>{children}</span>
       <span
         aria-hidden
-        className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5"
+        className="inline-block transition-transform duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:translate-x-[var(--hover-nudge)] group-focus-visible:translate-x-[var(--hover-nudge)]"
       >
         {arrow}
       </span>
     </>
   );
 
-  if (external || href.startsWith("mailto:") || href.startsWith("tel:") || href.endsWith(".pdf")) {
+  if (
+    external ||
+    href.startsWith("mailto:") ||
+    href.startsWith("tel:") ||
+    href.endsWith(".pdf")
+  ) {
     return (
       <a
         href={href}

@@ -12,16 +12,18 @@ type Props = {
 export function ProjectIndexRow({ project, index, delayMs = 0 }: Props) {
   const shot = project.screenshots[0];
   const stack = project.technologies.join(" / ");
+  const staggerIndex = Math.min(Math.floor(delayMs / 60), 5);
 
   return (
-    <Reveal delayMs={delayMs}>
+    <Reveal index={staggerIndex}>
       <Link
         href={project.caseStudyPath}
         className="group grid grid-cols-[auto_1fr_auto] items-start gap-4 border-t border-rule py-8 md:grid-cols-[4rem_1fr_minmax(0,14rem)_auto] md:items-center md:gap-8"
+        prefetch
       >
-        <span className="text-label text-ink-muted pt-1">{index}</span>
+        <span className="text-label pt-1 text-ink-muted">{index}</span>
         <div className="min-w-0">
-          <h3 className="font-[family-name:var(--font-outfit)] text-xl font-medium tracking-tight transition-colors duration-200 group-hover:text-accent md:text-2xl">
+          <h3 className="font-[family-name:var(--font-outfit)] text-xl font-medium tracking-tight transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:text-accent group-focus-visible:text-accent md:text-2xl">
             {project.title}
           </h3>
           <p className="text-body mt-2 text-ink-muted">{project.summary}</p>
@@ -40,14 +42,14 @@ export function ProjectIndexRow({ project, index, delayMs = 0 }: Props) {
                 alt=""
                 width={shot.width}
                 height={shot.height}
-                className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+                className="h-full w-full object-cover object-top transition-transform duration-[var(--dur-base)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:scale-[var(--image-scale)] group-focus-visible:scale-[var(--image-scale)]"
                 sizes="128px"
               />
             </div>
           ) : null}
           <span
             aria-hidden
-            className="text-ink transition-transform duration-200 group-hover:translate-x-1"
+            className="text-ink transition-transform duration-[var(--dur-fast)] ease-[var(--ease-out)] [@media(hover:hover)]:group-hover:translate-x-[var(--hover-nudge)] group-focus-visible:translate-x-[var(--hover-nudge)]"
           >
             →
           </span>

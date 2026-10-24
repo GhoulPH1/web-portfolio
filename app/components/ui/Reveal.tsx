@@ -1,62 +1,86 @@
 "use client";
 
 import {
+  Children,
+  cloneElement,
+  isValidElement,
   useEffect,
   useRef,
-  useSyncExternalStore,
+  type CSSProperties,
+  type ReactElement,
   type ReactNode,
 } from "react";
+import { observeOnce } from "../motion/observer";
 
-type Props = {
+type RevealProps = {
   children: ReactNode;
   className?: string;
-  delayMs?: number;
+  /** Stagger index within a group (0–5). Extra siblings share the last step. */
+  index?: number;
+  as?: "div" | "span" | "li" | "article" | "section";
 };
 
-function subscribeReducedMotion(onStoreChange: () => void) {
-  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-  mq.addEventListener("change", onStoreChange);
-  return () => mq.removeEventListener("change", onStoreChange);
-}
+const MAX_STAGGER = 5;
 
-function getReducedMotion() {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
-export function Reveal({ children, className = "", delayMs = 0 }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduceMotion = useSyncExternalStore(
-    subscribeReducedMotion,
-    getReducedMotion,
-    () => true,
-  );
+export function Reveal({
+  children,
+  className = "",
+  index = 0,
+  as: Tag = "div",
+}: RevealProps) {
+  const ref = useRef<HTMLElement | null>(null);
+  const staggerIndex = Math.min(Math.max(index, 0), MAX_STAGGER);
 
   useEffect(() => {
     const node = ref.current;
-    if (!node || reduceMotion) return;
+    if (!node) return;
 
-    node.style.opacity = "0";
-    node.style.transform = "translateY(12px)";
-    node.style.transition = `opacity 280ms ease-out ${delayMs}ms, transform 280ms ease-out ${delayMs}ms`;
+    const markVisible = () => {
+      node.classList.add("is-visible");
+      node.style.willChange = "opacity, transform";
+      const clear = () => {
+        node.style.willChange = "auto";
+        node.removeEventListener("transitionend", clear);
+      };
+      node.addEventListener("transitionend", clear);
+    };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          node.style.opacity = "1";
-          node.style.transform = "translateY(0)";
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [reduceMotion, delayMs]);
+    // Above-the-fold / already intersecting: still use observer (fires sync-ish).
+    return observeOnce(node, markVisible);
+  }, []);
 
   return (
-    <div ref={ref} className={className}>
+    <Tag
+      ref={ref as never}
+      className={`motion-reveal ${className}`.trim()}
+      style={{ ["--stagger-index" as string]: staggerIndex } as CSSProperties}
+    >
       {children}
+    </Tag>
+  );
+}
+
+type RevealGroupProps = {
+  children: ReactNode;
+  className?: string;
+};
+
+/** Staggers direct Reveal children (or clones elements with an index prop). */
+export function RevealGroup({ children, className = "" }: RevealGroupProps) {
+  return (
+    <div className={className}>
+      {Children.map(children, (child, i) => {
+        if (!isValidElement(child)) return child;
+        const el = child as ReactElement<{ index?: number }>;
+        if (el.type === Reveal) {
+          return cloneElement(el, { index: el.props.index ?? i });
+        }
+        return (
+          <Reveal key={el.key ?? i} index={i}>
+            {child}
+          </Reveal>
+        );
+      })}
     </div>
   );
 }
