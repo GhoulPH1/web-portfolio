@@ -13,7 +13,7 @@ export const contact: ContactInfo = {
   email: "godricramelo@gmail.com",
   phoneDisplay: "+63 927 179 0706",
   phoneTel: "+639271790706",
-  locationDisplay: "Calapacuan, Subic, Zambales",
+  locationDisplay: "Subic, Zambales, Philippines",
   profiles: [
     {
       label: "GitHub",
