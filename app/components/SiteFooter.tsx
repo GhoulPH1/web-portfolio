@@ -56,6 +56,19 @@ export function SiteFooter() {
               </li>
               {contact.phoneDisplay ? <li>{contact.phoneDisplay}</li> : null}
               {contact.locationDisplay ? <li>{contact.locationDisplay}</li> : null}
+              {contact.profiles.map((profile) => (
+                <li key={profile.href}>
+                  <a
+                    href={profile.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-accent-on-dark"
+                  >
+                    {profile.label} ↗
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

@@ -12,7 +12,7 @@ export default function NotFound() {
         </p>
         <p className="mt-8 flex flex-wrap gap-6">
           <TextLink href="/">Home</TextLink>
-          <TextLink href="/projects">Work</TextLink>
+          <TextLink href="/projects">Projects</TextLink>
         </p>
       </Container>
     </main>

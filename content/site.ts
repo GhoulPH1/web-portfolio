@@ -11,13 +11,17 @@ export const siteMeta: SiteMetadata = {
 
 export const contact: ContactInfo = {
   email: "godricramelo@gmail.com",
-  phoneDisplay: "0927 179 0706",
+  phoneDisplay: "+63 927 179 0706",
   phoneTel: "+639271790706",
   locationDisplay: "Calapacuan, Subic, Zambales",
   profiles: [
     {
       label: "GitHub",
       href: "https://github.com/GoulPH1",
+    },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/godric-ramelo-646665444/",
     },
   ],
 };

@@ -7,10 +7,24 @@
   --ink-muted: #6b6b6b;
   --rule: #d9d9d9;
   --accent: #1b2a4a;
+  --accent-deep: #0f1a30;
   --bg-dark: #0e0e0e;
   --rule-dark: #2a2a2a;
   --accent-on-dark: #8fa3c7;
   --space: 0.5rem;
+}
+
+[data-theme="dark"] {
+  --bg: #0e0e0e;
+  --bg-alt: #161616;
+  --ink: #f4f4f2;
+  --ink-muted: #9a9a9a;
+  --rule: #2a2a2a;
+  --accent: #8fa3c7;
+  --accent-deep: #5c7399;
+  --bg-dark: #14213d;
+  --rule-dark: #2f3a55;
+  --accent-on-dark: #b8c6de;
 }
 
 @theme inline {
@@ -20,6 +34,7 @@
   --color-ink-muted: var(--ink-muted);
   --color-rule: var(--rule);
   --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
   --color-bg-dark: var(--bg-dark);
   --color-rule-dark: var(--rule-dark);
   --color-accent-on-dark: var(--accent-on-dark);
@@ -52,6 +67,13 @@ body {
   font-family: var(--font-outfit), system-ui, sans-serif;
   font-size: 1.0625rem;
   line-height: 1.65;
+}
+
+body *:not(input):not(textarea):not([contenteditable="true"]) {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
 }
 
 :focus-visible {
@@ -117,4 +139,15 @@ a {
 
 .hairline-dark {
   border-top-color: var(--rule-dark);
+}
+
+@keyframes nav-flyout {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

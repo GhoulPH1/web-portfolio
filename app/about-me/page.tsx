@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { LearningList } from "../components/LearningList";
 import { SkillList } from "../components/SkillList";
+import { BackLink } from "../components/ui/BackLink";
 import { Hairline } from "../components/ui/Hairline";
-import { MetaList } from "../components/ui/MetaList";
 import { Reveal } from "../components/ui/Reveal";
 import { Section } from "../components/ui/Section";
 import { SectionLabel } from "../components/ui/SectionLabel";
@@ -27,30 +27,10 @@ export default function AboutMePage() {
   const edu = education[0];
   const job = experience[0];
 
-  const credentialItems = [
-    edu
-      ? {
-          label: "Education",
-          value: `${edu.statusLabel} · ${edu.credential} · ${edu.institution}, ${edu.location}`,
-        }
-      : null,
-    job
-      ? {
-          label: "INTERNSHIP",
-          value: `${job.title} · ${job.organization} · ${job.start} – ${job.end}`,
-        }
-      : null,
-    edu
-      ? {
-          label: "Coursework",
-          value: edu.coursework.join(", "),
-        }
-      : null,
-  ].filter(Boolean) as { label: string; value: string }[];
-
   return (
     <main id="main">
       <Section>
+        <BackLink href="/" label="Home" className="mb-10" />
         <SectionLabel index="02" label="About" />
         <div className="mt-10 grid gap-10 md:grid-cols-12">
           <h1 className="text-h1 md:col-span-5">About</h1>
@@ -71,13 +51,66 @@ export default function AboutMePage() {
         </div>
 
         <Hairline className="mt-16" />
-        <div className="mt-10">
-          <h2 className="text-label text-ink-muted">Credentials</h2>
-          <MetaList className="mt-6 md:grid-cols-1" items={credentialItems} />
+
+        <div className="mt-12 space-y-14">
+          {edu ? (
+            <section id="education" aria-labelledby="education-heading">
+              <h2 id="education-heading" className="text-label text-ink-muted">
+                Education
+              </h2>
+              <div className="mt-5 border-l border-rule pl-5 md:pl-6">
+                <p className="font-[family-name:var(--font-outfit)] text-lg font-medium tracking-tight">
+                  {edu.credential}
+                </p>
+                <p className="mt-2 text-sm text-ink-muted">
+                  {edu.statusLabel} · {edu.institution}, {edu.location}
+                </p>
+                {edu.coursework.length > 0 ? (
+                  <div className="mt-6">
+                    <p className="text-label text-ink-muted">Coursework</p>
+                    <p className="text-base font-m mt-3 max-w-none text-ink-muted">
+                      {edu.coursework.join(", ")}
+                    </p>
+                  </div>
+                ) : null}
+              </div>
+            </section>
+          ) : null}
+
+          {job ? (
+            <section id="experience" aria-labelledby="experience-heading">
+              <Hairline className="mb-14" />
+              <h2 id="experience-heading" className="mt-12 text-label text-ink-muted">
+                Experience
+              </h2>
+              <div className="mt-5 border-l border-rule pl-5 md:pl-6">
+                <p className="font-[family-name:var(--font-outfit)] text-lg font-medium tracking-tight">
+                  {job.title}
+                </p>
+                <p className="mt-2 text-sm text-ink-muted">
+                  {job.employmentType} · {job.organization}
+                </p>
+                <p className="mt-1 text-sm text-ink-muted">
+                  {job.location} · {job.start} – {job.end}
+                </p>
+                <p className="text-label mt-8 text-ink-muted">Responsibilities</p>
+                <ul className="mt-3 space-y-0">
+                  {job.responsibilities.map((item) => (
+                    <li
+                      key={item}
+                      className="border-t border-rule py-3 text-base font-m max-w-none text-ink-muted first:border-t-0"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          ) : null}
         </div>
       </Section>
 
-      <Section alt>
+      <Section id="skills" alt>
         <h2 className="text-h2">Skills</h2>
         <p className="text-body mt-3 text-ink-muted">
           Grouped by use in academic projects and support work.
@@ -87,7 +120,7 @@ export default function AboutMePage() {
         </div>
       </Section>
 
-      <Section>
+      <Section id="learning">
         <h2 className="text-h2">Currently learning</h2>
         <p className="text-body mt-3 text-ink-muted">
           Learning activities — not experience, training credentials, or certifications.

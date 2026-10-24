@@ -25,13 +25,13 @@ export default function Home() {
   return (
     <main id="main">
       {/* Hero */}
-      <section className="bg-bg">
+      <section id="intro" className="bg-bg">
         <div className="mx-auto grid min-h-[calc(100svh-3.5rem)] w-full max-w-[1280px] grid-cols-1 content-center gap-10 px-5 py-20 md:grid-cols-12 md:gap-8 md:px-10 md:py-28">
           <div className="md:col-span-11 lg:col-span-10">
-            <p className="font-[family-name:var(--font-outfit)] text-base font-light tracking-wide text-ink-muted md:text-lg">
-              {homeGreeting}
-            </p>
-            <h1 className="text-display mt-3 text-ink">
+          <p className="font-[family-name:var(--font-outfit)] text-lg font-light tracking-wide text-ink-muted md:text-xl">
+            {homeGreeting}
+          </p>
+            <h1 className="text-9xl mt-3 text-ink">
               <span className="font-light">Godric</span>{" "}
               <span className="inline-block font-medium">G. Ramelo</span>
             </h1>
@@ -95,7 +95,7 @@ export default function Home() {
       {/* About preview */}
       <Section id="about" alt>
         <SectionLabel index="02" label="About" />
-        <div className="mt-10 grid gap-10 md:grid-cols-12">
+        <div className="mt-10 mb-13 grid gap-10 md:grid-cols-12">
           <h2 className="text-h1 md:col-span-5">About</h2>
           <div className="md:col-span-6 md:col-start-7">
             <Reveal>
@@ -115,7 +115,7 @@ export default function Home() {
         <div className="mt-10 grid gap-10 md:grid-cols-12">
           <div className="md:col-span-8">
             <p className="font-[family-name:var(--font-outfit)] text-3xl font-light tracking-tight text-white md:text-5xl">
-              {rolesOpenTo}
+              {/* {rolesOpenTo} */}Let’s connect.
             </p>
             <p className="mt-8">
               <a
@@ -137,13 +137,26 @@ export default function Home() {
               {contact.phoneDisplay ? <p>{contact.phoneDisplay}</p> : null}
               {contact.locationDisplay ? <p>{contact.locationDisplay}</p> : null}
             </div>
+            {contact.profiles.length > 0 ? (
+              <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+                {contact.profiles.map((profile) => (
+                  <li key={profile.href}>
+                    <a
+                      href={profile.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-label text-white/70 transition-colors hover:text-accent-on-dark"
+                    >
+                      {profile.label} ↗
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
             {resume.available && resume.href ? (
               <div className="mt-10">
-                <Button
-                  href={resume.href}
-                  external
-                  className="border-0 bg-white text-ink hover:bg-accent-on-dark hover:text-bg-dark"
-                >
+                <Button href={resume.href} external variant="onDark">
                   Download résumé
                 </Button>
               </div>

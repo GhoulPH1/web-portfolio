@@ -75,7 +75,7 @@ export const skillCategories: SkillCategory[] = [
         id: "mongo",
         name: "MongoDB",
         level: "foundational",
-        evidenceNote: "Basic familiarity; not demonstrated in the featured projects.",
+        // evidenceNote: "Basic familiarity; not demonstrated in the featured projects.",
       },
     ],
   },

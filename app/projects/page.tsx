@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FeaturedProject } from "../components/work/FeaturedProject";
 import { ProjectIndexRow } from "../components/work/ProjectIndexRow";
+import { BackLink } from "../components/ui/BackLink";
 import { Hairline } from "../components/ui/Hairline";
 import { Section } from "../components/ui/Section";
 import { SectionLabel } from "../components/ui/SectionLabel";
@@ -18,9 +19,10 @@ export default function ProjectsPage() {
   return (
     <main id="main">
       <Section>
+        <BackLink href="/" label="Home" className="mb-10" />
         <SectionLabel index="01" label="Work" />
         <div className="mt-10 grid gap-6 md:grid-cols-12">
-          {/* <h1 className="text-h1 md:col-span-7 md:col-start-5">Selected work</h1> */}
+          <h1 className="text-h1 md:col-span-7 md:col-start-5">Selected work</h1>
         </div>
 
         <div className="mt-16 space-y-20">

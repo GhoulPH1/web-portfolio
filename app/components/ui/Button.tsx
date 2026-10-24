@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 type Props = {
   href: string;
   children: ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "onDark";
   external?: boolean;
   className?: string;
 };
@@ -19,9 +19,11 @@ export function Button({
   const base =
     "inline-flex min-h-11 items-center justify-center px-5 py-2.5 text-label transition-colors duration-200";
   const styles =
-    variant === "primary"
-      ? "bg-ink text-bg hover:bg-accent"
-      : "border border-ink text-ink hover:border-accent hover:text-accent";
+    variant === "onDark"
+      ? "border-0 bg-accent-on-dark text-[#0e0e0e] hover:bg-accent-deep hover:text-white"
+      : variant === "primary"
+        ? "bg-ink text-bg hover:bg-accent"
+        : "border border-ink text-ink hover:border-accent hover:text-accent";
 
   const classes = `${base} ${styles} ${className}`.trim();
 
